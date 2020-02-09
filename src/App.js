@@ -7,7 +7,6 @@ import Router from "./Routes";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   render() {
