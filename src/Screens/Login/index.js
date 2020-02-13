@@ -1,5 +1,7 @@
 import React from "react";
 import "./style.css";
+import {fbLogin} from '../../config/firebase'
+
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -9,6 +11,19 @@ export default class Login extends React.Component {
       passowrd: ""
     };
   }
+
+  fbLoginBtn = async()=>{
+    console.log('hello')
+    try {
+      const response = await fbLogin()
+      console.log('response==>',response)
+      const  userData = await response.user.uid
+      console.log('user' , userData)
+    } catch (error) {
+      console.log('error' , error)
+    }
+  }  
+
   render() {
     const { email, passowrd } = this.state;
     return (
@@ -17,7 +32,9 @@ export default class Login extends React.Component {
           <div className="headingWrapper">
             <p>meetUp App</p>
           </div>
-          <button className="loginButton">Facebook Login</button>
+          <button className="loginButton" onClick={this.fbLoginBtn}>
+            Facebook Login
+          </button>
         </div>
       </div>
     );
