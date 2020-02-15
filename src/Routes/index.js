@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Home from "../Screens/Home";
 import Login from "../Screens/Login";
 import Location from "../Screens/Location";
+import Profile from "../Screens/Profile";
 
 const Router = () => {
   return (
@@ -14,6 +15,7 @@ const Router = () => {
           <Route exact component={Home} path="/" />
           <Route exact component={Login} path="/login" />
           <Route exact component={Location} path="/location" />
+          <Route exact component={Profile} path="/profile" />
         </Switch>
       </React.Fragment>
     </BrowserRouter>
