@@ -111,6 +111,11 @@ body {
   outline: none;
 }
 
+.fileField{
+  border-radius: 50px ;
+  /* border-radius-right: 50px ; */
+}
+
 label{
   font-size: 17px;
   color: black;

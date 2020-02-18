@@ -18,7 +18,7 @@ export default class Profile extends React.Component {
       userImg2: "",
       userImg3: "",
       timeDuration: [],
-      state: "basic"
+      state: "image"
     };
   }
 
@@ -55,6 +55,10 @@ export default class Profile extends React.Component {
     }
   };
 
+  userImage = ()=>{
+    console.log('img')
+  }
+
   forMeeting = async () => {
     const { beveragesArr, timeDuration } = this.state
     const { history } = this.props
@@ -70,7 +74,6 @@ export default class Profile extends React.Component {
 
     beverageCheckBox = (value, isSelected) => {
       let { beveragesArr } = this.state;
-      console.log("val", value);
       if (!isSelected) {
         for (let i = 0; i < beveragesArr.length; i++) {
           if (beveragesArr[i] == value) {
@@ -98,7 +101,6 @@ export default class Profile extends React.Component {
         timeDuration.push(value)
         this.setState({ timeDuration })
       }
-      console.log('time', timeDuration)
     };
 
     beverageAndTimeSubmit = async () => {
@@ -152,6 +154,31 @@ export default class Profile extends React.Component {
                 Next
             </button>
             </div>
+          )}
+          {state == 'image' && (
+            <div className="optionsWrapper">
+            <div className="beverageWrapper">
+              <h1>Uplaod Your Picture</h1>
+              <div className="nestedchild">
+                <ol>
+                  <li>
+                  <input type='file' className='fileField'/>
+                  </li>
+                  <li>
+                  <input type='file' className='fileField'/>
+                  </li>
+                  <li>
+                  <input type='file' className='fileField'/>
+                  </li>
+                </ol>
+              </div>
+              <div className="buttonWrapper">
+                <button className="nextBtn" onClick={this.forBeverages}>
+                  NEXT
+              </button>
+              </div>
+            </div>
+          </div>
           )}
           {state == "beverage" && (
             <div className="optionsWrapper">
