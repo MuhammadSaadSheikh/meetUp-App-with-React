@@ -18,7 +18,7 @@ export default class Profile extends React.Component {
       userImg2: "",
       userImg3: "",
       timeDuration: [],
-      state: "meetingTime"
+      state: "basic"
     };
   }
 

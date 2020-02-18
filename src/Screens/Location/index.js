@@ -8,82 +8,78 @@ import { setUser } from "../../config/firebase";
 //userId
 const userId = localStorage.getItem("userId");
 
-export default class Location extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      coords: {}
-    };
-  }
-
-  componentDidMount() {
-    this.userCurrentLocation();
-  }
-
-  userCurrentLocation = () => {
-    // const {coords} = this.state
-    navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
-      this.setState({ coords: { latitude, longitude } });
-    });
-  };
-
-  updateUserLocation = () => {
-    const { coords } = this.state;
-    const { lat, lng } = coords.latlng;
-    let userLocation = {
-      latitude: lat(),
-      longitude: lng()
-    };
-    this.setState({ coords: userLocation });
-  };
-
-  submitLocation = async () => {
-    const { coords } = this.state;
-    const { history } = this.props;
-
-    try {
-      if ((coords && !coords.latitude) || !coords.longitude) {
-        alert("Select proper location!");
-        return;
-      } else {
-        await setUser(userId, { coords, register: true });
-        alert("set user location");
-        history.replace("/");
+export default class Location extends React.Component{
+  constructor(props){
+    super(props)
+      this.state = {
+        coords : {}
       }
-    } catch (error) {
-      console.log("submit user location error ==>", error);
     }
-  };
+    
+    componentDidMount(){
+      this.currentLocationOfUser()
+    }
+    
+    currentLocationOfUser = ()=>{
+      navigator.geolocation.getCurrentPosition(positon =>{
+        // console.log('position==>' , positon)
+        const {latitude , longitude} = positon.coords 
+        this.setState({coords : {latitude, longitude}})
+      })
+    }
+    
+    updateUserLocation = coords=>{
+      const {lat , lng} = coords.latLng 
+      console.log('updateUSer==>' , coords.latLng)
+      let location = {
+        latitude : lat(),
+        longitude : lng()
+      }
+      this.setState({coords : location})
+      console.log('location==>' , location)
+    }
 
-  render() {
-    const { coords } = this.state;
-    return (
-      <div className="mainContainer">
-        <div className="nestedWrapper">
-          {/* {/* <h1>abc</h1> */}
-          <div className="mapWrapper">
-            <MyMapComponent
-              isMarkerShown
-              googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
-              loadingElement={<div style={{ height: `100%` }} />}
-              containerElement={<div style={{ height: `400px` }} />}
-              mapElement={<div style={{ height: `100%` }} />}
-            />
-          </div>
-          <button className="submitButton">Submit</button>
+    submitLocation = async() =>{
+      const {coords} = this.state
+      const {history} = this.props
+      try {
+        if(!coords && !coords.latitude || !coords.longitude){
+          alert("please select the meeting location!")
+        }
+        else{
+          setUser(userId , {coords , register : true})
+          history.replace('/')
+        }
+      } catch (error) {
+        console.log('location error==>' , error)
+      }
+    }
+
+    render(){
+      const {coords} = this.state
+      return(
+        <div>
+           <MyMapComponent
+          isMarkerShown
+          googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+          loadingElement={<div style={{ height: "100%" }} />}
+          containerElement={<div style={{ height: "350px" }} />}
+          mapElement={<div style={{ height: "100%" }} />}
+          coords={coords}
+          updateUserLocation={this.updateUserLocation}
+        />
+        <div className='nestedWrapper'>
+        <button onClick={this.submitLocation} className = 'submitButton'>Submit</button>
         </div>
-      </div>
-    );
-  }
+        </div>
+      )
+    }
 }
 
-
-//map component
-
+//Map Component
 const MyMapComponent = withScriptjs(
   withGoogleMap(props => {
-    const { coords, updateLocation, isMarkerShown } = props;
+    const { coords, updateUserLocation, isMarkerShown } = props;
     return (
       <GoogleMap
         center={{
@@ -100,7 +96,7 @@ const MyMapComponent = withScriptjs(
               lng: coords.longitude
             }}
             onDragEnd={position => {
-              updateLocation(position);
+              updateUserLocation(position);
             }}
           />
         )}
