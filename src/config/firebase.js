@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase, { storage } from "firebase";
 import "firebase/firestore";
 import { firebaseConfig } from "./credentials";
 
@@ -25,3 +25,32 @@ export const setUser = (userId, playload) => {
     .doc(userId)
     .set(playload, { merge: true });
 };
+
+export const uploadPictures = files => {
+  const response = Promise.all(
+    files.map(files => {
+      const fileName = Math.floor(Math.random() * 1000000);
+      return new Promise((resolve, rejected) => {
+        storage
+          .ref()
+          .child("/images" + fileName + ".jpg")
+          .put(files)
+          .then(() => {
+            storage
+              .ref()
+              .child("images" + fileName + "jpg")
+              .getDownloadURL()
+              .then(uri => {
+                resolve(uri);
+              });
+          });
+      });
+    })
+  );
+  return response
+};
+
+export const logOut = ()=>{
+  localStorage.removeItem('userId')
+  return auth.signOut()
+}

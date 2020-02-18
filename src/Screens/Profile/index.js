@@ -2,7 +2,7 @@ import React from "react";
 import "./style.css";
 
 //methods
-import { setUser } from "../../config/firebase";
+import { setUser , uploadPictures } from "../../config/firebase";
 
 //localStorage
 const userId = localStorage.getItem("userId");
@@ -55,9 +55,26 @@ export default class Profile extends React.Component {
     }
   };
 
-  userImage = ()=>{
-    console.log('img')
-  }
+// }
+    userImage = async()=>{
+      console.log('img')
+      const {userImg1, userImg2, userImg3} = this.state
+  
+      if(!userImg1 || userImg2 || userImg3){
+        alert("Please upload Pictures!")
+        return
+      }
+      try {
+        let images = [userImg1, userImg2, userImg3]
+        const userProfileImg = await uploadPictures(images)
+  
+        await setUser(userId , {userProfileImg})
+        this.setState({state : 'beverage'})
+      } catch (error) {
+        console.log('images error ==>' , error)
+      }
+  
+      }
 
   forMeeting = async () => {
     const { beveragesArr, timeDuration } = this.state
