@@ -2,7 +2,7 @@ import React from "react";
 import "./style.css";
 
 //methods
-import { setUser, uploadPictures } from "../../config/firebase";
+import { setUser, uploadPictures} from "../../config/firebase";
 
 //localStorage
 const userId = localStorage.getItem("userId");
@@ -18,12 +18,11 @@ export default class Profile extends React.Component {
       userImg2: "",
       userImg3: "",
       timeDuration: [],
-      stage: "image"
+      stage: "basic"
     };
   }
 
   stateHandling = (key, value) => {
-    console.log("imges", value);
     this.setState({
       [key]: value
     });
@@ -57,20 +56,21 @@ export default class Profile extends React.Component {
   };
 
   
-  userImage = async () => {
+  handleUploadPicture = async () => {
     const { userImg1, userImg2, userImg3 } = this.state;
+
     if (!userImg1 || !userImg2 || !userImg3) {
       alert("All fields required!");
       return;
     }
+
     try {
       let images = [userImg1, userImg2, userImg3];
-      const userProfileImg = await uploadPictures(images);
-      await setUser(userId, { userProfileImg });
-      this.setState({ stage: "beverage"});
-    }
-     catch (error) {
-      console.log("images error ==>", error);
+      const profileImages = await uploadPictures(images);
+      await setUser(userId, { profileImages });
+      this.setState({ stage: "beverages" });
+    } catch (error) {
+      console.log( "handleUploadPicture-> error", error)
     }
   };
 
@@ -90,7 +90,7 @@ export default class Profile extends React.Component {
     let { beveragesArr } = this.state;
     if (!isSelected) {
       for (let i = 0; i < beveragesArr.length; i++) {
-        if (beveragesArr[i] == value) {
+        if (beveragesArr[i] === value) {
           beveragesArr.splice(i, 1);
         }
       }
@@ -133,15 +133,12 @@ export default class Profile extends React.Component {
   render() {
     const {
       stage,
-      pictureArr,
       userName,
       usreNumber,
-      beveragesArr,
-      timeduration
     } = this.state;
     return (
       <div className="mainContainer">
-        {stage == "basic" && (
+        {stage === "basic" && (
           <div className="neatedWrapper">
             <h1>Welcome</h1>
             <div className="inputWrapper">
@@ -167,7 +164,7 @@ export default class Profile extends React.Component {
             </button>
           </div>
         )}
-        {stage == "image" && (
+        {stage === "image" && (
           <div className="optionsWrapper">
             <div className="beverageWrapper">
               <h1>Uplaod Your Picture</h1>
@@ -204,14 +201,14 @@ export default class Profile extends React.Component {
                 </ol>
               </div>
               <div className="buttonWrapper">
-                <button className="nextBtn" onClick={this.userImage}>
+                <button className="nextBtn" onClick={this.handleUploadPicture}>
                   NEXT
                 </button>
               </div>
             </div>
           </div>
         )}
-        {stage == "beverage" && (
+        {stage === "beverage" && (
           <div className="optionsWrapper">
             <div className="beverageWrapper">
               <h1>What do you want on meeting?</h1>

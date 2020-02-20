@@ -13,7 +13,6 @@ import Home from '../Screens/Home1'
 // import Profile from '../Screens/Profile1'
 // import Location from '../Screens/Location1'
 
-console.log("home")
 
 const Router = () => {
   return (

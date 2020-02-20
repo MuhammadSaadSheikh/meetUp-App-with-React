@@ -1,15 +1,8 @@
 import React from "react";
 import "./style.css";
-import { fbLogin } from "../../config/firebase";
+import { fbLogin, getUser } from "../../config/firebase";
 
 export default class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    // this.state = {
-    //   userUid : '',
-    //   name : ''
-    // };
-  }
 
   fbLoginBtn = async () => {
     console.log("hello");
@@ -22,24 +15,53 @@ export default class Login extends React.Component {
       console.log("error", error);
     }
   };
-  randomLogin = () => {
+
+
+  randomLogin = async() => {
     console.log('hello')
     const {history } = this.props
-    const number = Math.floor(Math.random()*10000)
-    // const userName = ['ali' , 'ahemd' , 'rashid' , 'kashif' , 'rashid' , 'zahid' , 'amir' , 'aqib' , 'sajid' , 'haris']
-    // const randomName = userName[Math.floor(Math.random() * userName.length)]
+    const number = Math.floor(Math.random()*10000000)
+
     const userData = number
     localStorage.setItem('userId' , number)
-    if(number){
-      history.replace('/profile')
+    const user = await getUser(number)
+    if(user.data()){
+      this.checkStage(user.data())
     }
-    else{
-      alert('user id not found!')
-    }
+    // if(number){
+    //   history.replace('/profile')
+    // }
+    // else{
+    //   alert('user id not found!')
+    // }
   };
 
+  checkStage = data =>{
+    const {history} = this.props
+    if(data.registure){
+      history.replace('/')
+    }
+    else{
+      if(!data.userName || !data.userNumber){
+        localStorage.setItem('stage' , 'basic')
+        history.replace('/profile')
+      }
+      else if(!data.images){
+        localStorage.setItem('stage' , 'image')
+        history.replace('/profile')
+      }
+      else if(!data.beverage){
+        localStorage.setItem('stage' , 'beverage')
+        history.replace('/profile')
+      }
+      else if(!data.meetingTime){
+        localStorage.setItem('stage' , 'meetingTime')
+        history.replace('/profile')
+      }
+    }
+  }
+
   render() {
-    // const { } = this.state;
     return (
       <div className="mainContainer">
         <div className="childWrapper">
