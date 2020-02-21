@@ -46,17 +46,30 @@ export default class Home1 extends React.Component {
       if (response.size) {
         response.forEach(doc => {
           temp.push({ ...doc.data(), docID: doc.id });
+          console.log('doc=>' , doc)
         });
         this.setState({
           meetings: temp,
           loader: false
         });
       }
-    } catch (error) {}
+      else{
+        this.setState({
+          meetings : temp,
+          loader : false
+        })
+      }
+    } catch (error) {
+      this.setState({
+        meetings : [],
+        loader :false
+      })
+      console.log('check meeting =>' , error)
+    }
   };
 
   render() {
-    const { meetings, loader } = this.props;
+    const { meetings, loader } = this.state;
     const { history } = this.props;
     return (
       <div>

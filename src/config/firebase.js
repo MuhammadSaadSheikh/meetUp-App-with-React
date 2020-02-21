@@ -7,7 +7,7 @@ firebase.initializeApp(firebaseConfig);
 const provider = new firebase.auth.FacebookAuthProvider();
 const db = firebase.firestore();
 const auth = firebase.auth();
-const storage = firebase.storage()
+const storage = firebase.storage();
 
 export const fbLogin = userId => {
   return auth.signInWithPopup(provider);
@@ -66,6 +66,6 @@ export const getAllMeetings = userId => {
     .get();
 };
 
-export const otherUsers = ()=>{
-  return db.collection('otherUser').get
-}
+export const otherUsers = () => {
+  return db.collection("otherUser").get;
+};
