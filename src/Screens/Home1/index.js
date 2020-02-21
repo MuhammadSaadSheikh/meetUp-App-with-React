@@ -1,5 +1,5 @@
 import React from "react";
-import { logOut, getAllMeetings } from "../../config/firebase";
+import { logOut, getAllMeetings, setUser } from "../../config/firebase";
 
 export default class Home1 extends React.Component {
   constructor(props) {
@@ -11,12 +11,12 @@ export default class Home1 extends React.Component {
     };
   }
 
-  componentWillMount(){
-      this.checkLoginState()
+  componentWillMount() {
+    this.checkLoginState();
   }
 
-  componentDidMount(){
-    this.checkMeeting()
+  componentDidMount() {
+    this.checkMeeting();
   }
 
   checkLoginState = () => {
@@ -38,29 +38,47 @@ export default class Home1 extends React.Component {
     }
   };
 
-  checkMeeting = async()=>{
-      const userId = localStorage.getItem('userId')
-      let temp = []
-      try {
-          const response = await getAllMeetings(userId)
-          if(response.size){
-              
-          }
-      } catch (error) {
-          
+  checkMeeting = async () => {
+    const userId = localStorage.getItem("userId");
+    let temp = [];
+    try {
+      const response = await getAllMeetings(userId);
+      if (response.size) {
+        response.forEach(doc => {
+          temp.push({ ...doc.data(), docID: doc.id });
+        });
+        this.setState({
+          meetings: temp,
+          loader: false
+        });
       }
-  }
+    } catch (error) {}
+  };
 
   render() {
     const { meetings, loader } = this.props;
-    const {history} = this.props
+    const { history } = this.props;
     return (
       <div>
         <button onClick={this.handlelogOut}>Logout</button>
         <React.Fragment>
-            {loader ? <p>Loading...</p>
-            : <React.Fragment></React.Fragment>}
+          {loader ? (
+            <p>Loading...</p>
+          ) : (
+            <React.Fragment>
+              {!meetings.legth ? (
+                <p>You don't have any meetings yet!</p>
+              ) : (
+                <React.Fragment>
+                  {meetings.map((val, ind) => {
+                    return <p>{ind}</p>;
+                  })}
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          )}
         </React.Fragment>
+        <button onClick={()=>{history.replace('/meeting')}}>Set a meeting</button>
       </div>
     );
   }
