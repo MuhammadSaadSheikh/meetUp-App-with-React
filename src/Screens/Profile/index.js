@@ -18,44 +18,35 @@ export default class Profile extends React.Component {
       userImg2: "",
       userImg3: "",
       timeDuration: [],
-      stage: "basic"
+      stage: "beverages"
     };
+    console.log('state' , this.state)
   }
 
+  
   stateHandling = (key, value) => {
     this.setState({
       [key]: value
     });
+    console.log('key==>' , key)
+    console.log('value=>' , value)
   };
+
 
   forBasic = async () => {
-    console.log("basics");
-    const { userName, usreNumber } = this.state;
-    if (!userName || !usreNumber) {
-      alert("All fields required!");
-      return;
-    }
-    try {
-      await setUser(userId, { userName, usreNumber });
-      this.setState({ stage: "images" });
-    } catch (error) {
-      console.log("basicError==>", error);
-    }
+      const { userName, usreNumber } = this.state;
+      if (!userName || !usreNumber) {
+        alert("All fields required!");
+        return;
+      }
+      try {
+        await setUser(userId, { userName, usreNumber });
+        this.setState({ stage: "image" });
+      } catch (error) {
+        console.log("basicError==>", error);
+      }
   };
-
-  forBeverages = () => {
-    const { beveragesArr } = this.state;
-    if (!beveragesArr.length) {
-      alert("Select the Beverages!");
-      return;
-    } else {
-      this.setState({
-        state: "meetingTime"
-      });
-    }
-  };
-
-  
+ 
   handleUploadPicture = async () => {
     const { userImg1, userImg2, userImg3 } = this.state;
 
@@ -74,15 +65,17 @@ export default class Profile extends React.Component {
     }
   };
 
-  forMeeting = async () => {
-    const { beveragesArr, timeDuration } = this.state;
-    const { history } = this.props;
-    try {
-      setUser(userId, { beveragesArr, timeDuration });
-      alert("Meeting set");
-      history.replace("/location");
-    } catch (error) {
-      console.log("setMeeting==>", error);
+  forBeverages = () => {
+    console.log('3rd step')
+    const { beveragesArr } = this.state;
+    if (!beveragesArr.length) {
+      alert("Select the Beverages!");
+      return;
+    } else {
+      this.setState({
+        stage: "meetingTime"
+      });
+      alert('function run')
     }
   };
 
@@ -98,7 +91,7 @@ export default class Profile extends React.Component {
       beveragesArr.push(value);
       this.setState({ beveragesArr });
     }
-    // console.log("beverage", beveragesArr);
+    console.log("beverage", beveragesArr);
   };
 
   timeDurationCheckBox = (value, isSelected) => {
@@ -112,6 +105,19 @@ export default class Profile extends React.Component {
     } else {
       timeDuration.push(value);
       this.setState({ timeDuration });
+    }
+  };
+
+  
+  forMeeting = async () => {
+    const { beveragesArr, timeDuration } = this.state;
+    const { history } = this.props;
+    try {
+      setUser(userId, { beveragesArr, timeDuration });
+      alert("Meeting set");
+      history.replace("/location");
+    } catch (error) {
+      console.log("setMeeting==>", error);
     }
   };
 
@@ -208,7 +214,7 @@ export default class Profile extends React.Component {
             </div>
           </div>
         )}
-        {stage === "beverage" && (
+        {stage === "beverages" && (
           <div className="optionsWrapper">
             <div className="beverageWrapper">
               <h1>What do you want on meeting?</h1>

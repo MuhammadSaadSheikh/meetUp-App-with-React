@@ -21,13 +21,14 @@ export default class Login extends React.Component {
     console.log('hello')
     const {history } = this.props
     const number = Math.floor(Math.random()*10000000)
-
     const userData = number
     localStorage.setItem('userId' , number)
-    const user = await getUser(number)
-    if(user.data()){
-      this.checkStage(user.data())
-    }
+    history.replace('/profile')
+
+    // const user = await getUser(number)
+    // if(user.data()){
+    //   this.checkStage(user.data())
+    // }
     // if(number){
     //   history.replace('/profile')
     // }
@@ -36,30 +37,30 @@ export default class Login extends React.Component {
     // }
   };
 
-  checkStage = data =>{
-    const {history} = this.props
-    if(data.registure){
-      history.replace('/')
-    }
-    else{
-      if(!data.userName || !data.userNumber){
-        localStorage.setItem('stage' , 'basic')
-        history.replace('/profile')
-      }
-      else if(!data.images){
-        localStorage.setItem('stage' , 'image')
-        history.replace('/profile')
-      }
-      else if(!data.beverage){
-        localStorage.setItem('stage' , 'beverage')
-        history.replace('/profile')
-      }
-      else if(!data.meetingTime){
-        localStorage.setItem('stage' , 'meetingTime')
-        history.replace('/profile')
-      }
-    }
-  }
+  // checkStage = data =>{
+  //   const {history} = this.props
+  //   if(data.registure){
+  //     history.replace('/')
+  //   }
+  //   else{
+  //     if(!data.userName || !data.userNumber){
+  //       localStorage.setItem('stage' , 'basic')
+  //       history.replace('/profile')
+  //     }
+  //     else if(!data.images){
+  //       localStorage.setItem('stage' , 'image')
+  //       history.replace('/profile')
+  //     }
+  //     else if(!data.beverage){
+  //       localStorage.setItem('stage' , 'beverage')
+  //       history.replace('/profile')
+  //     }
+  //     else if(!data.meetingTime){
+  //       localStorage.setItem('stage' , 'meetingTime')
+  //       history.replace('/profile')
+  //     }
+  //   }
+  // }
 
   render() {
     return (
