@@ -1,6 +1,6 @@
 import React from "react";
 import "./style.css";
-import { fbLogin, getUser } from "../../config/firebase";
+import { fbLogin, getUser, setUser } from "../../config/firebase";
 
 export default class Login extends React.Component {
 
@@ -22,6 +22,7 @@ export default class Login extends React.Component {
     const {history } = this.props
     const number = Math.floor(Math.random()*10000000)
     const userData = number
+    // setUser(number , {userId :number})
     localStorage.setItem('userId' , number)
     history.replace('/profile')
 

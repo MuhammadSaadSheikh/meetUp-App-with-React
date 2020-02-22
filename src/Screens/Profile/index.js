@@ -18,7 +18,7 @@ export default class Profile extends React.Component {
       userImg2: "",
       userImg3: "",
       timeDuration: [],
-      stage: "beverages"
+      stage: "basic"
     };
     console.log('state' , this.state)
   }
@@ -60,13 +60,13 @@ export default class Profile extends React.Component {
       const profileImages = await uploadPictures(images);
       await setUser(userId, { profileImages });
       this.setState({ stage: "beverages" });
+      console.log('userImg' , images)
     } catch (error) {
       console.log( "handleUploadPicture-> error", error)
     }
   };
 
   forBeverages = () => {
-    console.log('3rd step')
     const { beveragesArr } = this.state;
     if (!beveragesArr.length) {
       alert("Select the Beverages!");
@@ -75,7 +75,6 @@ export default class Profile extends React.Component {
       this.setState({
         stage: "meetingTime"
       });
-      alert('function run')
     }
   };
 
@@ -106,6 +105,7 @@ export default class Profile extends React.Component {
       timeDuration.push(value);
       this.setState({ timeDuration });
     }
+    console.log('time' , timeDuration)
   };
 
   

@@ -61,7 +61,7 @@ export const logOut = () => {
 //meeting collection
 export const getAllMeetings = userId => {
   return db
-    .collection("meetings")
+    .collection("usersMeetings")
     .where("userId", "==", userId)
     .get();
 };
